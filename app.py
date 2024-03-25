@@ -47,8 +47,8 @@ def main():
     st.sidebar.image(image_path, caption='')
     
 
-    api_key = "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"
-    assistant_id = "asst_mHv0pDlN8le4m7xtKPi7QMzI"
+    api_key = st.secrets["OPENAI_API_KEY"]
+    assistant_id = st.secrets["ASSISTANT_ID"]
 
     # Initiate st.session_state
     st.session_state.client = OpenAI(api_key=api_key)
