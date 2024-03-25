@@ -2,7 +2,7 @@ from openai import OpenAI
 import time
 import streamlit as st
 from PIL import Image
-import pyttsx3
+#import pyttsx3
 import threading
 import pydub
 from pydub.playback import play
@@ -15,13 +15,13 @@ image2_file = "new.png"
 
 def main():
 
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')
-    voice_id = 1  # Select the desired voice index
-    engine.setProperty('voice', voices[voice_id].id)
+    #engine = pyttsx3.init()
+    #voices = engine.getProperty('voices')
+    #voice_id = 1  # Select the desired voice index
+    #engine.setProperty('voice', voices[voice_id].id)
 
-    rate = engine.getProperty('rate')
-    engine.setProperty('rate', rate - 8)
+    #rate = engine.getProperty('rate')
+    #engine.setProperty('rate', rate - 8)
 
     st.set_page_config(
         page_title="Cigna AI Assistant",
@@ -157,8 +157,8 @@ def main():
             # Display assistant response in chat message container
             with st.chat_message("assistant"):
                 st.markdown(processed_response, unsafe_allow_html=True)
-                engine.say(processed_response)
-                engine.runAndWait()
+                #engine.say(processed_response)
+                #engine.runAndWait()
 
 if __name__ == "__main__":
     main()
