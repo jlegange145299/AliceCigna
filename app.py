@@ -1,12 +1,15 @@
+
+from pathlib import Path
 from openai import OpenAI
 import time
 import streamlit as st
 from PIL import Image
-#import pyttsx3
 import threading
 import pydub
 from pydub.playback import play
 import os
+
+
 
 root_dir = os.getcwd()
 video_file = "video.mp4"
@@ -15,14 +18,7 @@ image2_file = "new.png"
 
 def main():
 
-    #engine = pyttsx3.init()
-    #voices = engine.getProperty('voices')
-    #voice_id = 1  # Select the desired voice index
-    #engine.setProperty('voice', voices[voice_id].id)
-
-    #rate = engine.getProperty('rate')
-    #engine.setProperty('rate', rate - 8)
-
+    
     st.set_page_config(
         page_title="Cigna AI Assistant",
         page_icon="📚",
@@ -40,7 +36,14 @@ def main():
     add_selectbox = st.sidebar.selectbox(
     'How would you like to be contacted?',
     ('Email', 'Home phone', 'Mobile phone')
-)
+    )
+    
+    add_selectbox = st.sidebar.selectbox(
+    'How often would you like to be contacted?',
+    ('Daily', 'Weekly', 'Monthly','Never')
+    )
+    
+
     slider_value = st.sidebar.slider("How satisfied out of 10 were you with your last Cigna interaction?", 0, 5, 10)
     
     image_path = os.path.join(root_dir,image2_file)
@@ -154,11 +157,32 @@ def main():
             st.session_state.messages.append(
                 {"role": "assistant", "content": processed_response}
             )
-            # Display assistant response in chat message container
+            
+            speech_file_path = Path(__file__).parent / "speech.mp3"
+
+# Delete the previous recorded file if it exists
+            if speech_file_path.is_file():
+                speech_file_path.unlink()
+
+# Display assistant response in chat message container
             with st.chat_message("assistant"):
                 st.markdown(processed_response, unsafe_allow_html=True)
-                #engine.say(processed_response)
-                #engine.runAndWait()
+    
+            client = st.session_state.client
+
+# Request the API to create the audio file
+            response = client.audio.speech.create(
+            model="tts-1",
+            voice="nova",
+            input=processed_response
+            )
+
+# Save the new audio file
+            with open(speech_file_path, "wb") as audio_file:
+                audio_file.write(response.content)
+
+# Play the most recent audio file
+            st.audio(speech_file_path.read_bytes())
 
 if __name__ == "__main__":
     main()
