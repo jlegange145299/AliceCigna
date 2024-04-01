@@ -184,7 +184,7 @@ def main():
 # Play the most recent audio file
             #st.audio(speech_file_path.read_bytes())
             audio_file_path = "speech.mp3"
-                            st.markdown(f'<audio autoplay controls><source src="{audio_file_path}" type="audio/mp3"></audio>',unsafe_allow_html=True)
+            st.markdown(f'<audio autoplay controls><source src="{audio_file_path}" type="audio/mp3"></audio>',unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
